@@ -3,15 +3,17 @@
 using namespace std;
 
 // int inters = 100, lim = 100, limst = 1000;
-int inters = 55, lim = 5, limst = 200;
+int inters = 5, lim = 5, limst = 10; 
+double consts = 3, carconst = 80;
 vector<int> adj[1000];
 bool hasedge[1000][1000];
 int cost[1000][1000];
 int a[1000];
 int idx[1000];
+int st[1000005];
 vector<vector<pair<int, int> > > inter[1000];
-pair<int, vector<int> > cars[1000];
-mt19937 g(rand());
+pair<int, vector<int> > cars[100000];
+mt19937 g(rand()+time(0));
 
 void addedge(int u, int v)
 {
@@ -71,12 +73,12 @@ signed main()
 	for(int i=1; i<=3*inters; i++) idx[i]=i;
 	shuffle(idx+1, idx+3*inters+1, g);
 
-	for(int i=2; i<=inters/2; i++)
+	for(int i=2; i<=inters; i++)
 	{
 		int last = g()%(i-1)+1;
 		addedge(i, last);
 	}
-	for(int i=1; i<=inters/2; i++)
+	for(int i=1; i<=inters*consts; i++)
 	{
 		int u=g()%inters+1, v=g()%inters+1;
 		addedge(u, v);
@@ -107,12 +109,13 @@ signed main()
 		}
 		for(int j=0; j<splits; j++)
 		{
-			if(temp[j].size()) inter[i].push_back(temp[j]);
+			inter[i].push_back(temp[j]);
 		}
 	}
-	for(int i=inters+1; i<=3*inters; i++)
+	for(int i=inters+1; i<=50000; i++)
 	{
-		cars[i] = {g()%limst, get_ran_path(i)};
+		st[i]=inters+1+g()%(2*inters);
+		cars[i] = {g()%limst, get_ran_path(st[i])};
 	}
 	cout<<"simulate(";
 	{
@@ -151,7 +154,7 @@ signed main()
 		}	
 		cout<<"}, [";
 		{
-			for(int i=inters+1; i<=3*inters; i++)
+			for(int i=inters+1; i<=(int)(inters*carconst); i++)
 			{
 				if(cars[i].second.size()==1) continue;
 				cout<<"("<<i-inters-1<<", [";
@@ -161,7 +164,7 @@ signed main()
 					if(j<cars[i].second.size()-1) cout<<", ";
 				}
 				cout<<"], "<<cars[i].first<<")";
-				if(i<inters*3) cout<<", ";
+				if(i<(int)(inters*carconst)) cout<<", ";
 			}
 		}
 		cout<<"]";
