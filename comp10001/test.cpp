@@ -3,8 +3,8 @@
 using namespace std;
 
 // int inters = 100, lim = 100, limst = 1000;
-int inters = 5, lim = 5, limst = 10; 
-double consts = 3, carconst = 80;
+int inters = 15, lim = 5, limst = 10; 
+double consts = 2, carconst = 10;
 vector<int> adj[1000];
 bool hasedge[1000][1000];
 int cost[1000][1000];
